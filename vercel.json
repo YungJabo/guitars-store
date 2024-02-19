@@ -1,4 +1,3 @@
 {
-  "builds": [{ "src": "./index.js", "use": "@versal/node" }],
   "routes": [{ "src": "/(.*)", "dest": "/" }]
 }
