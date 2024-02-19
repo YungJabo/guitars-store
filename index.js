@@ -15,7 +15,6 @@ import { getUser } from "./api/tokens.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
-const port = 3000;
 
 config();
 
@@ -71,7 +70,7 @@ app.get("/api/getUser", async (req, res) => {
   res.json(response);
 });
 
-app.listen(port, () => {
-  console.log(`Сервер запущен на порту ${port}`);
+app.listen(() => {
+  console.log(`Сервер запущен`);
   db(process.env.DB_URL);
 });
