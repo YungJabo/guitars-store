@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 export const db = (url) => {
-  console.log(url);
   mongoose.connect(url);
   mongoose.connection.on("connected", () => {
     console.log("Connection open");
