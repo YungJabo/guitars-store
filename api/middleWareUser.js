@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import jwt from "jsonwebtoken";
+import { UserModel } from "../schemas/userSchema.js";
 
 config();
 
