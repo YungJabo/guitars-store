@@ -19,6 +19,10 @@ const itemSchema = new Schema({
       type: String,
     },
   },
+  countOrders: {
+    type: Number,
+    default: 0,
+  },
 });
 
 export const ItemModel = model("item", itemSchema, "items");

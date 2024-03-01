@@ -14,6 +14,16 @@ const userSchema = new Schema({
   accessToken: {
     type: String,
   },
+  role: {
+    type: String,
+    default: "user",
+  },
+  orders: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "order",
+    },
+  ],
 });
 
 export const UserModel = model("user", userSchema, "users");

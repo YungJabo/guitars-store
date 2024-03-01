@@ -7,10 +7,10 @@ config();
 const secretKey = process.env.JWT_SECRET;
 export const createTokens = async (email) => {
   const accessToken = jwt.sign({ email: email }, secretKey, {
-    expiresIn: "10s",
+    expiresIn: "2h",
   });
   const refreshToken = jwt.sign({ email: email }, secretKey, {
-    expiresIn: "4m",
+    expiresIn: "2d",
   });
 
   return { accessToken, refreshToken };
@@ -45,11 +45,63 @@ export const getUser = async (access) => {
     if (decodedAccess) {
       const { email } = decodedAccess;
       const user = await UserModel.findOne({ email: email });
+
       return {
         name: user.name,
+        email: user.email,
+        role: user.role,
       };
     }
   } catch (error) {
     return false;
+  }
+};
+
+export const middleWareAdmin = async (req, res, next) => {
+  try {
+    const refreshToken = req.cookies.refresh;
+    const decodedAccess = jwt.verify(refreshToken, secretKey);
+    if (decodedAccess) {
+      const { email } = decodedAccess;
+      const user = await UserModel.findOne({ email: email }); // Находим пользователя в базе данных по email
+      if (user && (user.role === "admin" || user.role === "superadmin")) {
+        req.user = user; // Добавляем информацию о пользователе в объект запроса для последующего использования
+        next(); // Продолжаем выполнение запроса
+      } else {
+        res
+          .status(403)
+          .json({ error: "Access denied. Admin permissions required." });
+      }
+    } else {
+      res.status(401).json({ error: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const middleWareSuperAdmin = async (req, res, next) => {
+  try {
+    const refreshToken = req.cookies.refresh;
+    const decodedAccess = jwt.verify(refreshToken, secretKey);
+    console.log(refreshToken);
+    if (decodedAccess) {
+      const { email } = decodedAccess;
+      const user = await UserModel.findOne({ email: email }); // Находим пользователя в базе данных по email
+      if (user && user.role === "superadmin") {
+        req.user = user; // Добавляем информацию о пользователе в объект запроса для последующего использования
+        next(); // Продолжаем выполнение запроса
+      } else {
+        res
+          .status(403)
+          .json({ error: "Access denied. Admin permissions required." });
+      }
+    } else {
+      res.status(401).json({ error: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Unauthorized" });
   }
 };
