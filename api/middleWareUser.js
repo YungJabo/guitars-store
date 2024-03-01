@@ -5,7 +5,7 @@ export const middleWareUser = async (req, res, next) => {
     if (decodedAccess) {
       const { email } = decodedAccess;
       const user = await UserModel.findOne({ email: email }); // Находим пользователя в базе данных по email
-      if (user && user.role === "user") {
+      if (user) {
         req.user = user; // Добавляем информацию о пользователе в объект запроса для последующего использования
         next(); // Продолжаем выполнение запроса
       } else {

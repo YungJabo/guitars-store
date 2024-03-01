@@ -31,7 +31,9 @@ config();
 const staticFilesPath = path.join(__dirname, "dist");
 app.use(express.static(staticFilesPath));
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({ origin: "https://guitars-store.onrender.com", credentials: true })
+);
 app.use(cookieParser());
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -94,7 +96,7 @@ app.post("/api/sign_up", async (req, res) => {
   res.json(response);
 });
 
-app.get("/api/getOrders", async (req, res) => {
+app.get("/api/getOrders", middleWareUser, async (req, res) => {
   const refreshToken = req.cookies.refresh;
   const orders = await getOrders(refreshToken);
   res.json(orders);
