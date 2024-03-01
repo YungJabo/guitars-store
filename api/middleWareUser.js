@@ -1,3 +1,10 @@
+import { config } from "dotenv";
+import jwt from "jsonwebtoken";
+
+config();
+
+const secretKey = process.env.JWT_SECRET;
+
 export const middleWareUser = async (req, res, next) => {
   try {
     const refreshToken = req.cookies.refresh;
