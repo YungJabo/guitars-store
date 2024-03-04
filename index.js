@@ -33,8 +33,8 @@ const staticFilesPath = path.join(__dirname, "dist");
 app.use(express.static(staticFilesPath));
 app.use(express.json());
 app.use(
-  cors({ origin: "http://localhost:5173", credentials: true })
-  // cors({ origin: "https://guitars-store.onrender.com, credentials: true })
+  cors({ origin: "https://guitars-store.onrender.com", credentials: true })
+  // cors({ origin: "http://localhost:5173", credentials: true })
 );
 app.use(cookieParser());
 const storage = multer.memoryStorage();
