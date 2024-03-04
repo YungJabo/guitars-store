@@ -20,6 +20,7 @@ import cookieParser from "cookie-parser";
 import { createOrder } from "./api/createOrder.js";
 import { middleWareUser } from "./api/middleWareUser.js";
 import { getOrders } from "./api/getOrders.js";
+import { getPopularItems } from "./api/getPopularItems.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -115,6 +116,11 @@ app.patch("/api/changeRole", middleWareSuperAdmin, async (req, res) => {
 app.get("/api/getUsers", async (req, res) => {
   const users = await getUsers();
   res.json(users);
+});
+
+app.get("/api/popularItems", async (req, res) => {
+  const items = await getPopularItems();
+  res.json(items);
 });
 
 app.post("/api/login", async (req, res) => {

@@ -12,6 +12,7 @@ export const createOrder = async (email, name, items) => {
     if (!foundItem) {
       throw new Error(`Item with _id ${_id} not found`);
     }
+    await ItemModel.findByIdAndUpdate(_id, { $inc: { countOrders: 1 } });
     const price = quantity * foundItem.cost;
     total += price;
     orderItems.push({
