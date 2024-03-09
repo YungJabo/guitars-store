@@ -2,7 +2,7 @@ import { OrderModel } from "../schemas/orderSchema.js";
 import { ItemModel } from "../schemas/itemSchema.js";
 import { UserModel } from "../schemas/userSchema.js";
 
-export const createOrder = async (email, name, items) => {
+export const createOrder = async (email, name, items, address) => {
   const orderItems = [];
   let total = 0;
   for (const item of items) {
@@ -28,6 +28,7 @@ export const createOrder = async (email, name, items) => {
         userEmail: email,
         name: name,
       },
+      address: address,
       total: total,
     });
     const savedOrder = await newOrder.save();

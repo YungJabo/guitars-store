@@ -42,10 +42,10 @@ const orderSchema = new Schema({
     },
   },
 
-  //   adress: {
-  //     type: String,
-  //     required: true,
-  //   },
+  address: {
+    type: String,
+    required: true,
+  },
 });
 
 export const OrderModel = model("order", orderSchema, "orders");

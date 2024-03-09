@@ -26,6 +26,7 @@ export const ordersDto = async (orders) => {
         total: fullOrder.total,
         creationDate: getFormattedDate(fullOrder.creationDate),
         items: items,
+        address: fullOrder.address,
         _id: fullOrder._id.toString(),
       };
       allOrders.push(correctedOrder);

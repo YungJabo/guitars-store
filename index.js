@@ -21,6 +21,7 @@ import { createOrder } from "./api/createOrder.js";
 import { middleWareUser } from "./api/middleWareUser.js";
 import { getOrders } from "./api/getOrders.js";
 import { getPopularItems } from "./api/getPopularItems.js";
+import { findAddress } from "./api/findAddress.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -123,6 +124,12 @@ app.get("/api/popularItems", async (req, res) => {
   res.json(items);
 });
 
+app.get("/api/findAddress", async (req, res) => {
+  const address = req.query.address;
+  const addresses = await findAddress(address);
+  res.json(addresses);
+});
+
 app.post("/api/login", async (req, res) => {
   const { email, pass } = req.body;
   const response = await loginUser(email, pass);
@@ -151,8 +158,8 @@ app.get("/api/getUser", async (req, res) => {
 });
 
 app.post("/api/makeOrder", async (req, res) => {
-  const { email, name, items } = req.body;
-  const response = await createOrder(email, name, items);
+  const { email, name, items, address } = req.body;
+  const response = await createOrder(email, name, items, address);
   res.json(response);
 });
 
