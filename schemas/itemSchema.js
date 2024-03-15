@@ -19,7 +19,29 @@ const itemSchema = new Schema({
       type: String,
     },
   },
+  description: {
+    type: String,
+  },
+  propertyArray: [
+    {
+      property: {
+        type: String,
+      },
+      value: {
+        type: String,
+      },
+    },
+  ],
   countOrders: {
+    type: Number,
+    default: 0,
+  },
+
+  ratingCount: {
+    type: Number,
+    default: 0,
+  },
+  rating: {
     type: Number,
     default: 0,
   },

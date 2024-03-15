@@ -22,6 +22,7 @@ import { middleWareUser } from "./api/middleWareUser.js";
 import { getOrders } from "./api/getOrders.js";
 import { getPopularItems } from "./api/getPopularItems.js";
 import { findAddress } from "./api/findAddress.js";
+import { sendRating } from "./api/setRating.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,9 +61,17 @@ app.post(
   middleWareAdmin,
   upload.single("image"),
   async (req, res) => {
-    const { title, cost, category } = req.body;
+    const { title, cost, category, description, property } = req.body;
     const image = req.file;
-    await addItem(title, cost, category, image.buffer, image.mimetype);
+    await addItem(
+      title,
+      cost,
+      category,
+      image.buffer,
+      image.mimetype,
+      description,
+      property
+    );
   }
 );
 
@@ -71,7 +80,7 @@ app.post(
   middleWareAdmin,
   upload.single("image"),
   async (req, res) => {
-    const { title, cost, category, id } = req.body;
+    const { title, cost, category, id, description, property } = req.body;
     const image = req.file;
     let imgData = null;
     let imgType = null;
@@ -79,7 +88,17 @@ app.post(
       imgData = image.buffer;
       imgType = image.mimetype;
     }
-    await updateItem(title, cost, category, imgData, imgType, id);
+    console.log(description, property);
+    await updateItem(
+      title,
+      cost,
+      category,
+      imgData,
+      imgType,
+      id,
+      description,
+      property
+    );
   }
 );
 
@@ -160,6 +179,13 @@ app.get("/api/getUser", async (req, res) => {
 app.post("/api/makeOrder", async (req, res) => {
   const { email, name, items, address } = req.body;
   const response = await createOrder(email, name, items, address);
+  res.json(response);
+});
+
+app.patch("/api/setRating/:id", middleWareUser, async (req, res) => {
+  const id = req.params.id;
+  const { rating } = req.body;
+  const response = await sendRating(id, rating, req.user);
   res.json(response);
 });
 

@@ -1,17 +1,23 @@
 import { ItemModel } from "../schemas/itemSchema.js";
+import { convertToObject } from "./convertToObject.js";
 export const updateItem = async (
   title,
   cost,
   category,
   imgData,
   imgType,
-  id
+  id,
+  description,
+  property
 ) => {
+  const propertyArray = convertToObject(property);
   try {
     let updateFields = {
       title: title,
       cost: cost,
       category: category,
+      description: description,
+      propertyArray: propertyArray,
     };
     if (imgData && imgType) {
       updateFields.img = {

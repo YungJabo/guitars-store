@@ -1,5 +1,15 @@
 import { ItemModel } from "../schemas/itemSchema.js";
-export const addItem = async (title, cost, category, imgData, imgType) => {
+import { convertToObject } from "./convertToObject.js";
+export const addItem = async (
+  title,
+  cost,
+  category,
+  imgData,
+  imgType,
+  description,
+  property
+) => {
+  const propertyArray = convertToObject(property);
   try {
     const newItem = ItemModel({
       title: title,
@@ -9,6 +19,8 @@ export const addItem = async (title, cost, category, imgData, imgType) => {
         data: imgData,
         imgType: imgType,
       },
+      description: description,
+      propertyArray: propertyArray,
     });
     await newItem.save();
   } catch (error) {

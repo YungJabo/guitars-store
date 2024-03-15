@@ -17,6 +17,16 @@ const orderSchema = new Schema({
         type: Number,
         required: true,
       },
+      rated: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
+      rating: {
+        type: Number,
+        required: true,
+        default: 0,
+      },
     },
   ],
   total: {

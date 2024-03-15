@@ -61,6 +61,7 @@ export const middleWareAdmin = async (req, res, next) => {
   try {
     const refreshToken = req.cookies.refresh;
     const decodedAccess = jwt.verify(refreshToken, secretKey);
+
     if (decodedAccess) {
       const { email } = decodedAccess;
       const user = await UserModel.findOne({ email: email }); // Находим пользователя в базе данных по email

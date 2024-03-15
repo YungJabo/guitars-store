@@ -12,6 +12,19 @@ export const createOrder = async (email, name, items, address) => {
     if (!foundItem) {
       throw new Error(`Item with _id ${_id} not found`);
     }
+
+    const ratedItem = await OrderModel.findOne({
+      "items.item": _id,
+      "items.rated": true,
+      "user.name": name,
+    });
+    let rating = 0;
+    if (ratedItem) {
+      rating = ratedItem.items.find(
+        (i) => i.item.toString() === _id.toString()
+      ).rating;
+    }
+
     await ItemModel.findByIdAndUpdate(_id, { $inc: { countOrders: 1 } });
     const price = quantity * foundItem.cost;
     total += price;
@@ -19,6 +32,8 @@ export const createOrder = async (email, name, items, address) => {
       item: foundItem._id,
       quantity,
       price,
+      rated: ratedItem ? true : false,
+      rating: rating,
     });
   }
   try {
