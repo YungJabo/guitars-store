@@ -9,6 +9,7 @@ export const findAddress = async (address) => {
         location: { country: "Russia" },
         count: 12,
         restrict_value: "true",
+        with_flat_type: true,
       },
       {
         headers: {
