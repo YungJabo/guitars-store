@@ -1,7 +1,16 @@
 import { ItemModel } from "../schemas/itemSchema.js";
 import { OrderModel } from "../schemas/orderSchema.js";
-export const sendRating = async (id, rating, user) => {
+import { ReviewModel } from "../schemas/reviewSchema.js";
+export const sendRating = async (id, rating, review, user) => {
   try {
+    const newReview = new ReviewModel({
+      itemId: id,
+      name: user.name,
+      rating: rating,
+      value: review,
+    });
+    await newReview.save();
+
     await ItemModel.findByIdAndUpdate(id, {
       $inc: { ratingCount: 1, rating: rating },
     });

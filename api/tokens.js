@@ -64,10 +64,10 @@ export const middleWareAdmin = async (req, res, next) => {
 
     if (decodedAccess) {
       const { email } = decodedAccess;
-      const user = await UserModel.findOne({ email: email }); // Находим пользователя в базе данных по email
+      const user = await UserModel.findOne({ email: email });
       if (user && (user.role === "admin" || user.role === "superadmin")) {
-        req.user = user; // Добавляем информацию о пользователе в объект запроса для последующего использования
-        next(); // Продолжаем выполнение запроса
+        req.user = user;
+        next();
       } else {
         res
           .status(403)
@@ -86,7 +86,7 @@ export const middleWareSuperAdmin = async (req, res, next) => {
   try {
     const refreshToken = req.cookies.refresh;
     const decodedAccess = jwt.verify(refreshToken, secretKey);
-    console.log(refreshToken);
+
     if (decodedAccess) {
       const { email } = decodedAccess;
       const user = await UserModel.findOne({ email: email }); // Находим пользователя в базе данных по email

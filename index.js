@@ -23,6 +23,11 @@ import { getOrders } from "./api/getOrders.js";
 import { getPopularItems } from "./api/getPopularItems.js";
 import { findAddress } from "./api/findAddress.js";
 import { sendRating } from "./api/setRating.js";
+import { getItem } from "./api/getItem.js";
+import { getReviews } from "./api/getReviews.js";
+import { getAllReviews } from "./api/getAllReviews.js";
+import { deleteReview } from "./api/deleteReview.js";
+import { approveReview } from "./api/approveReview.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,6 +51,9 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(staticFilesPath, "index.html"));
 });
 app.get("/admin", middleWareSuperAdmin, (req, res) => {
+  res.sendFile(path.join(staticFilesPath, "index.html"));
+});
+app.get("/reviews", middleWareSuperAdmin, (req, res) => {
   res.sendFile(path.join(staticFilesPath, "index.html"));
 });
 
@@ -72,6 +80,7 @@ app.post(
       description,
       property
     );
+    res.json(true);
   }
 );
 
@@ -184,8 +193,37 @@ app.post("/api/makeOrder", async (req, res) => {
 
 app.patch("/api/setRating/:id", middleWareUser, async (req, res) => {
   const id = req.params.id;
-  const { rating } = req.body;
-  const response = await sendRating(id, rating, req.user);
+  const { rating, review } = req.body;
+  const response = await sendRating(id, rating, review, req.user);
+  res.json(response);
+});
+
+app.get("/api/getItem", async (req, res) => {
+  const id = req.query.id;
+  const response = await getItem(id);
+  res.json(response);
+});
+
+app.get("/api/getReviews", async (req, res) => {
+  const id = req.query.id;
+  const response = await getReviews(id);
+  res.json(response);
+});
+
+app.get("/api/getAllReviews", middleWareAdmin, async (req, res) => {
+  const response = await getAllReviews();
+  res.json(response);
+});
+
+app.delete("/api/review/:id", middleWareAdmin, async (req, res) => {
+  const id = req.params.id;
+  const response = await deleteReview(id);
+  res.json(response);
+});
+
+app.patch("/api/review", middleWareAdmin, async (req, res) => {
+  const { id } = req.body;
+  const response = await approveReview(id);
   res.json(response);
 });
 
