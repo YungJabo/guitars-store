@@ -64,6 +64,11 @@ app.get("/profile", middleWareUser, (req, res) => {
 app.get("/catalog", (req, res) => {
   res.sendFile(path.join(staticFilesPath, "index.html"));
 });
+
+app.get("/product/:id", (req, res) => {
+  res.sendFile(path.join(staticFilesPath, "index.html"));
+});
+
 app.post(
   "/api/add",
   middleWareAdmin,
